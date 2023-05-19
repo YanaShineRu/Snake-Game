@@ -10,3 +10,10 @@
 * let passOverBorder = true; 
 > true - Game mode no border
 > false - Game mode with border
+
+### Game Control
+
+* Button Top ↑
+* Button Bottom ↓
+* Button Left ←
+* Button Right →
