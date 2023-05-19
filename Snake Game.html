@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Snake Game</title>
+    <style>
+      @font-face {
+        font-family: '5peero';
+        src: url('5peero.ttf') format('truetype');
+      }
+
+      html {
+        background-color: #000;
+        font-family: '5peero';
+      }    
+
+      #game-board {
+        width: 600px;
+        height: 600px;
+        border: 1px solid #006838;
+        position: relative;
+        margin: 0 auto;
+        background-color: #006838;
+      }
+
+      #game-board::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to right, transparent 1px, #000 1px), linear-gradient(to bottom, transparent 1px, #000 1px);
+        background-size: 20px 20px;
+      }
+
+      #title {
+        text-align: center;
+        font-size: 30px;
+        color: #35DE00;        
+      }
+
+      .snake-part {
+        width: 20px;
+        height: 20px;
+        background-color: greenyellow;
+        position: absolute;
+      }
+
+      .snake-head {
+        background-color: yellow;
+      }
+
+      .food {
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        position: absolute;
+      }
+
+      .points-counter {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #35DE00;
+        text-align: center;
+      }
+      
+      .game-over-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 50px;
+        color: red;
+        text-shadow:0px 1px 0 rgb(0,0,0),0px -1px 0 rgb(0,0,0),1px 0px 0 rgb(0,0,0),-1px 0px 0 rgb(0,0,0),1px 1px 0 rgb(0,0,0),1px -1px 0 rgb(0,0,0),-1px 1px 0 rgb(0,0,0),-1px -1px 0 rgb(0,0,0),0px 2px 0 rgb(0,0,0),0px -2px 0 rgb(0,0,0),2px 0px 0 rgb(0,0,0),-2px 0px 0 rgb(0,0,0),2px 2px 0 rgb(0,0,0),2px -2px 0 rgb(0,0,0),-2px 2px 0 rgb(0,0,0),-2px -2px 0 rgb(0,0,0),0px 3px 0 rgb(0,0,0),0px -3px 0 rgb(0,0,0),3px 0px 0 rgb(0,0,0),-3px 0px 0 rgb(0,0,0),3px 3px 0 rgb(0,0,0),3px -3px 0 rgb(0,0,0),-3px 3px 0 rgb(0,0,0),-3px -3px 0 rgb(0,0,0),0px 4px 0 rgb(0,0,0),0px -4px 0 rgb(0,0,0),4px 0px 0 rgb(0,0,0),-4px 0px 0 rgb(0,0,0),4px 4px 0 rgb(0,0,0),4px -4px 0 rgb(0,0,0),-4px 4px 0 rgb(0,0,0),-4px -4px 0 rgb(0,0,0),0px 5px 0 rgb(0,0,0),0px -5px 0 rgb(0,0,0),5px 0px 0 rgb(0,0,0),-5px 0px 0 rgb(0,0,0),5px 5px 0 rgb(0,0,0),5px -5px 0 rgb(0,0,0),-5px 5px 0 rgb(0,0,0),-5px -5px 0 rgb(0,0,0),0px 6px 0 rgb(0,0,0),0px -6px 0 rgb(0,0,0),6px 0px 0 rgb(0,0,0),-6px 0px 0 rgb(0,0,0),6px 6px 0 rgb(0,0,0),6px -6px 0 rgb(0,0,0),-6px 6px 0 rgb(0,0,0),-6px -6px 0 rgb(0,0,0);
+        -webkit-text-shadow:0px 1px 0 rgb(0,0,0),0px -1px 0 rgb(0,0,0),1px 0px 0 rgb(0,0,0),-1px 0px 0 rgb(0,0,0),1px 1px 0 rgb(0,0,0),1px -1px 0 rgb(0,0,0),-1px 1px 0 rgb(0,0,0),-1px -1px 0 rgb(0,0,0),0px 2px 0 rgb(0,0,0),0px -2px 0 rgb(0,0,0),2px 0px 0 rgb(0,0,0),-2px 0px 0 rgb(0,0,0),2px 2px 0 rgb(0,0,0),2px -2px 0 rgb(0,0,0),-2px 2px 0 rgb(0,0,0),-2px -2px 0 rgb(0,0,0),0px 3px 0 rgb(0,0,0),0px -3px 0 rgb(0,0,0),3px 0px 0 rgb(0,0,0),-3px 0px 0 rgb(0,0,0),3px 3px 0 rgb(0,0,0),3px -3px 0 rgb(0,0,0),-3px 3px 0 rgb(0,0,0),-3px -3px 0 rgb(0,0,0),0px 4px 0 rgb(0,0,0),0px -4px 0 rgb(0,0,0),4px 0px 0 rgb(0,0,0),-4px 0px 0 rgb(0,0,0),4px 4px 0 rgb(0,0,0),4px -4px 0 rgb(0,0,0),-4px 4px 0 rgb(0,0,0),-4px -4px 0 rgb(0,0,0),0px 5px 0 rgb(0,0,0),0px -5px 0 rgb(0,0,0),5px 0px 0 rgb(0,0,0),-5px 0px 0 rgb(0,0,0),5px 5px 0 rgb(0,0,0),5px -5px 0 rgb(0,0,0),-5px 5px 0 rgb(0,0,0),-5px -5px 0 rgb(0,0,0),0px 6px 0 rgb(0,0,0),0px -6px 0 rgb(0,0,0),6px 0px 0 rgb(0,0,0),-6px 0px 0 rgb(0,0,0),6px 6px 0 rgb(0,0,0),6px -6px 0 rgb(0,0,0),-6px 6px 0 rgb(0,0,0),-6px -6px 0 rgb(0,0,0);
+        -moz-text-shadow:0px 1px 0 rgb(0,0,0),0px -1px 0 rgb(0,0,0),1px 0px 0 rgb(0,0,0),-1px 0px 0 rgb(0,0,0),1px 1px 0 rgb(0,0,0),1px -1px 0 rgb(0,0,0),-1px 1px 0 rgb(0,0,0),-1px -1px 0 rgb(0,0,0),0px 2px 0 rgb(0,0,0),0px -2px 0 rgb(0,0,0),2px 0px 0 rgb(0,0,0),-2px 0px 0 rgb(0,0,0),2px 2px 0 rgb(0,0,0),2px -2px 0 rgb(0,0,0),-2px 2px 0 rgb(0,0,0),-2px -2px 0 rgb(0,0,0),0px 3px 0 rgb(0,0,0),0px -3px 0 rgb(0,0,0),3px 0px 0 rgb(0,0,0),-3px 0px 0 rgb(0,0,0),3px 3px 0 rgb(0,0,0),3px -3px 0 rgb(0,0,0),-3px 3px 0 rgb(0,0,0),-3px -3px 0 rgb(0,0,0),0px 4px 0 rgb(0,0,0),0px -4px 0 rgb(0,0,0),4px 0px 0 rgb(0,0,0),-4px 0px 0 rgb(0,0,0),4px 4px 0 rgb(0,0,0),4px -4px 0 rgb(0,0,0),-4px 4px 0 rgb(0,0,0),-4px -4px 0 rgb(0,0,0),0px 5px 0 rgb(0,0,0),0px -5px 0 rgb(0,0,0),5px 0px 0 rgb(0,0,0),-5px 0px 0 rgb(0,0,0),5px 5px 0 rgb(0,0,0),5px -5px 0 rgb(0,0,0),-5px 5px 0 rgb(0,0,0),-5px -5px 0 rgb(0,0,0),0px 6px 0 rgb(0,0,0),0px -6px 0 rgb(0,0,0),6px 0px 0 rgb(0,0,0),-6px 0px 0 rgb(0,0,0),6px 6px 0 rgb(0,0,0),6px -6px 0 rgb(0,0,0),-6px 6px 0 rgb(0,0,0),-6px -6px 0 rgb(0,0,0);
+      }
+
+      #start-button {
+        position: absolute;
+        font-family: '5peero';
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        padding: 10px 20px;
+        background-color: green;
+        color: greenyellow;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title">
+      <h1>Snake Game</h1>
+    </div>
+    <div id="game-board"></div>
+    <!-- <button id="start-button">START GAME</button> -->
+    <script src="snake.js"></script>
+  </body>
+</html>
